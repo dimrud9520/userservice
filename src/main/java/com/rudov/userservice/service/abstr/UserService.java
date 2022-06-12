@@ -1,9 +1,12 @@
 package com.rudov.userservice.service.abstr;
 
 import com.rudov.userservice.data.dto.UserDTO;
+import com.rudov.userservice.data.entity.UserStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface UserService {
@@ -16,7 +19,9 @@ public interface UserService {
 
     void deleteById(Long id);
 
-    UserDTO updateUser(Long id,UserDTO updateUser);
+    UserDTO updateUser(Long id, UserDTO updateUser);
+
+    Map<String, Serializable> changeStatusUserById(UserStatus status, Long id);
 
 
 }

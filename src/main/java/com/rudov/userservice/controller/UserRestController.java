@@ -1,16 +1,20 @@
 package com.rudov.userservice.controller;
 
 import com.rudov.userservice.data.dto.UserDTO;
-import com.rudov.userservice.data.entity.UserEntity;
+import com.rudov.userservice.data.entity.UserStatus;
 import com.rudov.userservice.service.impl.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -23,6 +27,8 @@ public class UserRestController {
         this.userService = userService;
     }
 
+    @Tag(name = "REST-USER-POST")
+    @Operation(summary = "Create User")
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
         try {
@@ -34,6 +40,8 @@ public class UserRestController {
         }
     }
 
+    @Tag(name = "REST-USER-GET")
+    @Operation(summary = "Find user by id")
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
         UserDTO user = userService.getUserById(id);
@@ -45,6 +53,8 @@ public class UserRestController {
         }
     }
 
+    @Tag(name = "REST-USER-GET")
+    @Operation(summary = "Find all users")
     @RequestMapping(value = "/user/all", method = RequestMethod.GET)
     public ResponseEntity<List<UserDTO>> getAllUser() {
         List<UserDTO> list = new ArrayList<>();
@@ -61,6 +71,8 @@ public class UserRestController {
         }
     }
 
+    @Tag(name = "REST-USER-PUT")
+    @Operation(summary = "Update user by id")
     @RequestMapping(value = "/user/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<UserDTO> updateUserById(@PathVariable("id") Long id, @RequestBody UserDTO user) {
         UserDTO updatedUser = null;
@@ -73,6 +85,14 @@ public class UserRestController {
         }
     }
 
+    @RequestMapping(value = "/user/update/status/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Map<String, Serializable>> changeUserStatusById(@PathVariable("id") Long id, @RequestParam("status") UserStatus status) {
+        var response = userService.changeStatusUserById(status, id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Tag(name = "REST-USER-DELETE")
+    @Operation(summary = "Delete user by id")
     @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long id) {
         UserDTO dto = null;

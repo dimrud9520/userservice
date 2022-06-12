@@ -2,12 +2,16 @@ package com.rudov.userservice.service.impl;
 
 import com.rudov.userservice.data.dto.UserDTO;
 import com.rudov.userservice.data.entity.UserEntity;
+import com.rudov.userservice.data.entity.UserStatus;
 import com.rudov.userservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -75,6 +79,18 @@ public class UserService implements com.rudov.userservice.service.abstr.UserServ
             log.debug("entity by id :{} not found", id);
             return null;
         }
+    }
+//todo:написать проверки на отсутствие, добавить логи, дописать метод котроллера
+    @Override
+    public Map<String, Serializable> changeStatusUserById(UserStatus status, Long id) {
+        Map<String, Serializable> result = new HashMap<>();
+        UserDTO dto = getUserById(id);
+        result.put("ID", id);
+        result.put("Old status", dto.getStatus());
+        dto.setStatus(status);
+        result.put("New status", dto.getStatus());
+        updateUser(id, dto);
+        return result;
     }
 
 
