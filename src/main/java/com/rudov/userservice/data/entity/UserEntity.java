@@ -3,6 +3,7 @@ package com.rudov.userservice.data.entity;
 
 import com.rudov.userservice.data.dto.UserDTO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.time.Period;
 
 
 @Data
+@Builder
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
@@ -31,17 +33,17 @@ public class UserEntity implements AbstractEntity<UserEntity, UserDTO> {
     private String eMail;
 
     @Column(name = "status")
-    private Boolean status;
+    private UserStatus status;
 
     @Override
-    public UserDTO toDTO(UserEntity entity) {
+    public  UserDTO toDTO(UserEntity entity) {
         return UserDTO.builder()
                 .name(entity.getName())
                 .eMail(entity.getEMail())
                 .dateBirth(entity.getDateOfBirth())
                 .age((byte) Period.between(entity.getDateOfBirth(), LocalDate.now()).getYears())
                 .eMail(entity.getEMail())
-                .isOnline(entity.getStatus())
+                .status(entity.getStatus())
                 .build();
     }
 

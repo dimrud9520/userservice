@@ -1,5 +1,6 @@
 package com.rudov.userservice.data.dto;
 
+import com.rudov.userservice.data.entity.UserStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class UserDTO {
     private LocalDate dateBirth;
     private Byte age;
     private String eMail;
-    private Boolean isOnline;
+    private UserStatus status;
 
 
 }

@@ -1,13 +1,17 @@
 package com.rudov.userservice.repository;
 
 import com.rudov.userservice.data.entity.UserEntity;
+import com.rudov.userservice.data.entity.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+@Repository
+public interface UserRepository extends JpaRepository<UserEntity, Long>, CrudRepository<UserEntity, Long> {
 
-    List<UserEntity> findUserEntitiesByStatus(Boolean status);
+    List<UserEntity> findAllByStatus(UserStatus status);
+
 
 }
