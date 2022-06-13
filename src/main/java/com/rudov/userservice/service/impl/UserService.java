@@ -1,5 +1,6 @@
 package com.rudov.userservice.service.impl;
 
+import com.rudov.userservice.data.dto.Statistic;
 import com.rudov.userservice.data.dto.UserDTO;
 import com.rudov.userservice.data.entity.UserEntity;
 import com.rudov.userservice.data.entity.UserStatus;
@@ -9,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -80,17 +79,40 @@ public class UserService implements com.rudov.userservice.service.abstr.UserServ
             return null;
         }
     }
-//todo:написать проверки на отсутствие, добавить логи, дописать метод котроллера
+
     @Override
     public Map<String, Serializable> changeStatusUserById(UserStatus status, Long id) {
-        Map<String, Serializable> result = new HashMap<>();
-        UserDTO dto = getUserById(id);
-        result.put("ID", id);
-        result.put("Old status", dto.getStatus());
-        dto.setStatus(status);
-        result.put("New status", dto.getStatus());
-        updateUser(id, dto);
-        return result;
+        UserDTO dto = null;
+        dto = getUserById(id);
+        if (dto != null) {
+            Map<String, Serializable> result = new HashMap<>();
+            result.put("ID", id);
+            result.put("Old status", dto.getStatus());
+            dto.setStatus(status);
+            result.put("New status", dto.getStatus());
+            updateUser(id, dto);
+            return result;
+        } else {
+            log.debug("entity by id:{} not change status(not found)", id);
+            return Collections.emptyMap();
+        }
+    }
+
+    @Override
+    public Statistic getUserStatistic(UserStatus status, Optional<Byte> age) {
+        var statistic = Statistic.builder();
+        var findByStatus = repository.findAllByStatus(status);
+        var findAllByServer = getAllUser();
+        statistic.usersToServer(findAllByServer.size());
+        statistic.usersToServerByStatus(findByStatus.size());
+        var averageAge = findAllByServer.stream().mapToInt(user -> user.getAge()).average();
+        statistic.averageAge((int) averageAge.getAsDouble());
+        if (!age.isEmpty()) {
+            var ageUsers = findAllByServer.stream().filter(userDTO -> userDTO.getAge().equals(age.get())).collect(Collectors.toList());
+            statistic.usersListByAge(ageUsers);
+        }
+        return statistic.build();
+
     }
 
 

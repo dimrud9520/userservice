@@ -14,4 +14,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CrudRep
     List<UserEntity> findAllByStatus(UserStatus status);
 
 
+
 }

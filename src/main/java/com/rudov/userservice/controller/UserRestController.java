@@ -1,5 +1,6 @@
 package com.rudov.userservice.controller;
 
+import com.rudov.userservice.data.dto.Statistic;
 import com.rudov.userservice.data.dto.UserDTO;
 import com.rudov.userservice.data.entity.UserStatus;
 import com.rudov.userservice.service.impl.UserService;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -88,7 +90,12 @@ public class UserRestController {
     @RequestMapping(value = "/user/update/status/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Map<String, Serializable>> changeUserStatusById(@PathVariable("id") Long id, @RequestParam("status") UserStatus status) {
         var response = userService.changeStatusUserById(status, id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        if (!response.isEmpty()) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        }
+
     }
 
     @Tag(name = "REST-USER-DELETE")
@@ -102,6 +109,24 @@ public class UserRestController {
         }
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/user/statistic", method = RequestMethod.GET)
+    public ResponseEntity<Statistic> getUserStatistic(@RequestParam("status") UserStatus status,
+                                                      @RequestParam(required = false) Byte age) {
+        try {
+            Statistic statistic;
+            if (age != null) {
+                statistic = userService.getUserStatistic(status, Optional.of(age));
+            } else {
+                statistic = userService.getUserStatistic(status, null);
+            }
+            return new ResponseEntity<>(statistic, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("REST ERROR: statistic exception", e);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
