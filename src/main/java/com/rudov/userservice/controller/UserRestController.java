@@ -123,7 +123,7 @@ public class UserRestController {
             if (age != null) {
                 statistic = userService.getUserStatistic(status, Optional.of(age));
             } else {
-                statistic = userService.getUserStatistic(status, null);
+                statistic = userService.getUserStatistic(status, Optional.ofNullable(null));
             }
             return new ResponseEntity<>(statistic, HttpStatus.OK);
         } catch (Exception e) {
