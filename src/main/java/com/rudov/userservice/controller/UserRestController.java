@@ -87,6 +87,8 @@ public class UserRestController {
         }
     }
 
+    @Tag(name = "REST-USER-PUT")
+    @Operation(summary = "Change user status")
     @RequestMapping(value = "/user/update/status/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Map<String, Serializable>> changeUserStatusById(@PathVariable("id") Long id, @RequestParam("status") UserStatus status) {
         var response = userService.changeStatusUserById(status, id);
