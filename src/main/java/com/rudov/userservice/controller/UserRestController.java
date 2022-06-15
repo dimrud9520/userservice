@@ -3,7 +3,7 @@ package com.rudov.userservice.controller;
 import com.rudov.userservice.data.dto.Statistic;
 import com.rudov.userservice.data.dto.UserDTO;
 import com.rudov.userservice.data.entity.UserStatus;
-import com.rudov.userservice.service.impl.UserService;
+import com.rudov.userservice.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +22,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public UserRestController(UserService userService) {
+    public UserRestController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
