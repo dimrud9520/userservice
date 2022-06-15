@@ -111,7 +111,8 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    @Tag(name = "REST-USER-GET")
+    @Operation(summary = "Get statistic server")
     @RequestMapping(value = "/user/statistic", method = RequestMethod.GET)
     public ResponseEntity<Statistic> getUserStatistic(@RequestParam("status") UserStatus status,
                                                       @RequestParam(required = false) Byte age) {

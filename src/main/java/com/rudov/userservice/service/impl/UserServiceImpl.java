@@ -5,7 +5,6 @@ import com.rudov.userservice.data.dto.UserDTO;
 import com.rudov.userservice.data.entity.UserEntity;
 import com.rudov.userservice.data.entity.UserStatus;
 import com.rudov.userservice.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements com.rudov.userservice.service.abstr.UserService {
+
     private final UserRepository repository;
+
+    @Autowired
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository;
+    }
 
 
     @Override
