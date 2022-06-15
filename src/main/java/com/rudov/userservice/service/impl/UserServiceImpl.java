@@ -81,6 +81,17 @@ public class UserServiceImpl implements com.rudov.userservice.service.abstr.User
         }
     }
 
+    /**
+     * Метод меняет статутс пользователя
+     * @param status новый статус
+     * @param id ид пользователя, которому меняется статус
+     * @return MAP:
+     * {
+     *     ID : ид пользователя
+     *     Old status : старый статус пользователя
+     *     New status : новый статус пользователя
+     * }
+     */
     @Override
     public Map<String, Serializable> changeStatusUserById(UserStatus status, Long id) {
         UserDTO dto = null;
@@ -99,6 +110,12 @@ public class UserServiceImpl implements com.rudov.userservice.service.abstr.User
         }
     }
 
+    /**
+     * Данный метод пердоставляет статисткику сервера
+     * @param status предоставляет список пользователей по указаному параметру
+     * @param age в случае если задан параметр возраста, предоставляет список пользователей указанного возраста
+     * @return Статистика сервера
+     */
     @Override
     public Statistic getUserStatistic(UserStatus status, Optional<Byte> age) {
         var statistic = Statistic.builder();
