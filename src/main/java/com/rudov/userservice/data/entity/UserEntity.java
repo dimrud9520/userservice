@@ -18,10 +18,7 @@ import java.time.Period;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity implements AbstractEntity<UserEntity, UserDTO> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class UserEntity extends AbstractEntity<UserEntity, UserDTO> {
 
     @Column(name = "name")
     private String name;
